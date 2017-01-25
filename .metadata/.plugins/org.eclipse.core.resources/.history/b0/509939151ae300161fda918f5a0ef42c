@@ -143,8 +143,9 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 		// compl�ter
 		for (int i = 0; i < pm.height; i++){
 			for (int j = 0; j < pm.width; j++){
-				if(row0+i < height && col0 + j < width)
-					imageData[row0 + i][col0 + j] = pm.imageData[i][j];
+				try{
+				imageData[row0 + i][col0 + j] = pm.imageData[i][j];
+				}
 			}
 		}
 	}

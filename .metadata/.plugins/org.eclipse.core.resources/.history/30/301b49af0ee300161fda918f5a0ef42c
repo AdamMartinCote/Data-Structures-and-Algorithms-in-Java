@@ -102,22 +102,8 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void rotate(int x, int y, double angleRadian)
 	{
-	
 		// compl�ter
-		AbstractPixel[][] newImageData = new AbstractPixel[height][width]; 
 		
-		double sinTheta = java.lang.Math.sin(angleRadian);
-		double cosTheta = java.lang.Math.cos(angleRadian);
-		int xSource, ySource;
-		for (int i = 0; i < height; i++){
-			for (int j = 0; j < width; j++){
-				xSource = (int)((cosTheta*x) + (sinTheta*y) + ((-1*cosTheta*x) + (-1*sinTheta*y) + x));
-				ySource = (int)((-1*sinTheta*x) + (cosTheta*y) + ((sinTheta*x) + (-1*cosTheta*y) + y));
-				
-				newImageData[i][j] = imageData[xSource][ySource];
-			}
-		}
-		imageData = newImageData;
 	}
 	
 	/**
@@ -131,8 +117,7 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 			throw new IllegalArgumentException();
 		
 		// compl�ter
-		height = w;
-		width = h;
+		
 	}
 	
 	/**
@@ -141,12 +126,7 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	public void inset(PixelMap pm, int row0, int col0)
 	{
 		// compl�ter
-		for (int i = 0; i < pm.height; i++){
-			for (int j = 0; j < pm.width; j++){
-				if(row0+i < height && col0 + j < width)
-					imageData[row0 + i][col0 + j] = pm.imageData[i][j];
-			}
-		}
+		
 	}
 	
 	/**
