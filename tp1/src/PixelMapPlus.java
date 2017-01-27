@@ -158,8 +158,22 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void crop(int h, int w)
 	{
-		// compl�ter		
+		if(h < 0 || w < 0) return;
 		
+		// compl�ter	
+		AbstractPixel[][] newImageData = new AbstractPixel[h][w];
+		int i,j;		
+		for(i = 0; i < h; i++){
+			for(j = 0; j < w; j++){
+				if(i < height && j < width && i < h  && j < w )
+					newImageData[i][j] = imageData[i][j];
+				else
+					newImageData[i][j] = new BWPixel();
+			}
+		}
+		imageData = newImageData;
+		height = h;
+		width = w;
 	}
 	
 	/**
@@ -167,8 +181,19 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void translate(int rowOffset, int colOffset)
 	{
-		// compl�ter		
-		
+		// compl�ter
+		AbstractPixel[][] newImageData = new AbstractPixel[height][width];
+		int i, j;
+		for (i = 0; i < height; i++){
+			for(j = 0; j < width; j++){
+				if (i - rowOffset < 0 || i - rowOffset >= height ||
+					j - colOffset < 0 || j - colOffset >= width )
+					newImageData[i][j] = new BWPixel();
+				else
+					newImageData[i][j] = imageData[i - rowOffset][j - colOffset];
+			}
+		}
+		imageData = newImageData;		
 	}
 	
 	/**
