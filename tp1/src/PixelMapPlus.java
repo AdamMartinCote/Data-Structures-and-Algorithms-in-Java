@@ -109,12 +109,16 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 		double sinTheta = java.lang.Math.sin(angleRadian);
 		double cosTheta = java.lang.Math.cos(angleRadian);
 		int xSource, ySource;
+		BWPixel buffer = new BWPixel();
 		for (int i = 0; i < height; i++){
 			for (int j = 0; j < width; j++){
-				xSource = (int)((cosTheta*x) + (sinTheta*y) + ((-1*cosTheta*x) + (-1*sinTheta*y) + x));
-				ySource = (int)((-1*sinTheta*x) + (cosTheta*y) + ((sinTheta*x) + (-1*cosTheta*y) + y));
+				xSource = (int)((cosTheta*j) + (sinTheta*i) + ((-1*cosTheta*x) + (-1*sinTheta*y) + x));
+				ySource = (int)((-1*sinTheta*j) + (cosTheta*i) + ((sinTheta*x) + (-1*cosTheta*y) + y));
 				
-				newImageData[i][j] = imageData[xSource][ySource];
+				if(xSource < 0 || xSource > width || ySource < 0 || ySource > height)
+					newImageData[i][j] = buffer;
+				else
+					newImageData[i][j] = imageData[xSource][ySource];
 			}
 		}
 		imageData = newImageData;
@@ -179,7 +183,27 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 			throw new IllegalArgumentException();
 		
 		// compl�ter
+		AbstractPixel[][] newImageData = new AbstractPixel[height][width]; 
+		double upperCornerX = (x-width)/(2*zoomFactor);			
+		double upperCornerY = (y-height)/(2*zoomFactor);
 		
+		if(upperCornerX < 0)
+			upperCornerX=0;
+		else if (upperCornerX > width - width/zoomFactor)
+			upperCornerX = width - width/zoomFactor;
+		
+		if(upperCornerY < 0)
+			upperCornerY = 0;
+		else if (upperCornerY > height - height/zoomFactor)
+			upperCornerY = height - height/zoomFactor;
+		
+		for (int i = 0; i < height; i++){
+			for (int j = 0; j < width; j++){
+				newImageData[i][j] = imageData[(int)(upperCornerY+i/zoomFactor)]
+											  [(int)(upperCornerX+j/zoomFactor)];
+			}
+		}
+		imageData = newImageData;
 	}
 
 	/**
