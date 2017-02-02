@@ -135,8 +135,33 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 			throw new IllegalArgumentException();
 		
 		// compl�ter
-		height = w;
-		width = h;
+		AbstractPixel[][] newImageData = new AbstractPixel[h][w];
+		int i, j, sourceY, sourceX;
+		double facteurY = (double)h/(double)height;
+		double facteurX = (double)w/(double)width;
+		System.out.println(facteurY);
+		System.out.println(facteurX);
+		
+		for (i = 0; i < h; i++){
+			for (j = 0; j < w; j++){
+				sourceY = ((i/facteurY) < 0) ? 0 : (int)(i/facteurY);
+				sourceX = ((j/facteurX) < 0) ? 0 : (int)(j/facteurX);
+				sourceY = ((i/facteurY) > height - 1) ? height -1 : (int)(i/facteurY);
+				sourceX = ((j/facteurX) > width - 1) ? width -1 : (int)(j/facteurX);
+				if(i <10 && j <10){
+				System.out.println("-------");
+				System.out.println(i);
+				System.out.println(j);
+				System.out.println(sourceY);
+				System.out.println(sourceX);
+				}
+
+				newImageData[i][j] = imageData[sourceY][sourceX];
+			}
+		}
+		imageData = newImageData;
+		height = h;
+		width = w;		
 	}
 	
 	/**

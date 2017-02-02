@@ -38,7 +38,7 @@ public class Main
 		
 		PixelMapPlus pmp = new PixelMapPlus("./src/ed.ppm");
 		//pmp.zoomIn(100000, 0, 2);
-		//pmp.translate(-100, 200);
+		pmp.resize(800, 300);
 		
 		new DisplayImageWindow(wName, pmp);
 		/*
