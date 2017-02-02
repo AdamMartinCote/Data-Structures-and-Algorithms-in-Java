@@ -144,17 +144,8 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 		
 		for (i = 0; i < h; i++){
 			for (j = 0; j < w; j++){
-				sourceY = ((i/facteurY) < 0) ? 0 : (int)(i/facteurY);
-				sourceX = ((j/facteurX) < 0) ? 0 : (int)(j/facteurX);
 				sourceY = ((i/facteurY) > height - 1) ? height -1 : (int)(i/facteurY);
 				sourceX = ((j/facteurX) > width - 1) ? width -1 : (int)(j/facteurX);
-				if(i <10 && j <10){
-				System.out.println("-------");
-				System.out.println(i);
-				System.out.println(j);
-				System.out.println(sourceY);
-				System.out.println(sourceX);
-				}
 
 				newImageData[i][j] = imageData[sourceY][sourceX];
 			}
@@ -267,6 +258,13 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	public void replaceColor(AbstractPixel min, AbstractPixel max,
 			AbstractPixel newPixel) {
 		// compl�ter
-		
+		int i,j;
+		for (i = 0; i < height; i++){
+			for(j = 0; j < width; j++){
+				if(min.compareTo(imageData[i][j]) == -1 && imageData[i][j].compareTo(max) == -1){
+					imageData[i][j] = newPixel;
+				}
+			}
+		}
 	}
 }

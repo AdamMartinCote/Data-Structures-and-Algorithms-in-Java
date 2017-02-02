@@ -37,14 +37,11 @@ public class Main
 		 */
 		
 		PixelMapPlus pmp = new PixelMapPlus("./src/ed.ppm");
-		//pmp.zoomIn(100000, 0, 2);
-		pmp.resize(800, 300);
-		
-		new DisplayImageWindow(wName, pmp);
-		/*
+
 		PixelMapPlus hpmp = new PixelMapPlus( pmp );
 		hpmp.zoomIn(0, 0, 2);
 		hpmp.resize(hpmp.width/2, hpmp.height/2);
+		/*
 		int[] tMin = new int[3];
 		tMin[0] = 110;
 		tMin[1] = 110;
@@ -53,42 +50,37 @@ public class Main
 		tMax[0] = 220;
 		tMax[1] = 220;
 		tMax[2] = 220;
-		//int[] newColors = new int[3];
-		//newColors[0] = 255;
-		//newColors[1] = 255;
-		//newColors[2] = 255;
-		//hpmp.replaceColor(new ColorPixel(tMin), new ColorPixel(tMax), new ColorPixel(newColors));
+		int[] newColors = new int[3];
+		newColors[0] = 255;
+		newColors[1] = 255;
+		newColors[2] = 255;
+		hpmp.replaceColor(new ColorPixel(tMin), new ColorPixel(tMax), new ColorPixel(newColors));
 
 		
 		PixelMapPlus gpmp = new PixelMapPlus( pmp );
-		//gpmp.zoomIn(0, gpmp.height, 2);
+		gpmp.zoomIn(0, gpmp.height, 2);
 		gpmp.resize(gpmp.width/2, gpmp.height/2);
-		//gpmp.convertToGrayImage();
+		gpmp.convertToGrayImage();
 
 
 		PixelMapPlus bwpmp = new PixelMapPlus( pmp );
-		//bwpmp.zoomIn(pmp.getWidth(), 0, 2);
+		bwpmp.zoomIn(pmp.getWidth(), 0, 2);
 		bwpmp.resize(bwpmp.width/2, bwpmp.height/2);
-		//bwpmp.convertToBWImage();
+		bwpmp.convertToBWImage();
 		
 
 		PixelMapPlus npmp = new PixelMapPlus( pmp );
-		//npmp.zoomIn(npmp.getWidth(), npmp.getHeight(), 2);
+		npmp.zoomIn(npmp.getWidth(), npmp.getHeight(), 2);
 		npmp.resize(npmp.width/2, npmp.height/2);
-		//npmp.negate();
-
+		npmp.negate();
+		*/
 		pmp.inset(hpmp, 0, 0);
 		pmp.inset(gpmp, pmp.getHeight()/2, 0);
 		pmp.inset(bwpmp, 0, pmp.getWidth()/2);
 		pmp.inset(npmp, pmp.getHeight()/2, pmp.getWidth()/2);
 		
-		pmp.rotate(0, 0, 1);
-		
 		wName = "Edsger Dijkstra";
 		new DisplayImageWindow(wName, pmp);
-		*/
-		
-		//DEBUG
-		System.out.println("fini");
+
 	}
 }
