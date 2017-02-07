@@ -56,8 +56,11 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void negate()
 	{
-		// compl�ter
-		
+		int i,j;
+		for (i = 0; i < height; i++){
+			for ( j = 0; j < width; j++)
+				imageData[i][j] = imageData[i][j].Negative();
+		}
 	}
 	
 	/**
@@ -65,8 +68,11 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void convertToBWImage()
 	{
-		// compl�ter
-		
+		int i,j;
+		for (i = 0; i < height; i++){
+			for ( j = 0; j < width; j++)
+				imageData[i][j] = imageData[i][j].toBWPixel();
+		}
 	}
 	
 	/**
@@ -74,7 +80,11 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void convertToGrayImage()
 	{
-		// compl�ter
+		int i, j;
+		for (i = 0; i < height; i++){
+			for ( j = 0; j < width; j++)
+				imageData[i][j] = imageData[i][j].toGrayPixel();
+		}
 		
 	}
 	
@@ -83,14 +93,20 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void convertToColorImage()
 	{
-		// compl�ter
-		
+		int i, j;
+		for (i = 0; i < height; i++){
+			for ( j = 0; j < width; j++)
+				imageData[i][j] = imageData[i][j].toColorPixel();
+		}		
 	}
 	
 	public void convertToTransparentImage()
 	{
-		// compl�ter
-		
+		int i, j;
+		for (i = 0; i < height; i++){
+			for ( j = 0; j < width; j++)
+				imageData[i][j] = imageData[i][j].toTransparentPixel();
+		}
 	}
 	
 	/**
@@ -103,7 +119,7 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	public void rotate(int x, int y, double angleRadian)
 	{
 	
-		// compl�ter
+		// compl?ter
 		AbstractPixel[][] newImageData = new AbstractPixel[height][width]; 
 		
 		double sinTheta = java.lang.Math.sin(angleRadian);
@@ -115,7 +131,7 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 				xSource = (int)((cosTheta*j) + (sinTheta*i) + ((-1*cosTheta*x) + (-1*sinTheta*y) + x));
 				ySource = (int)((-1*sinTheta*j) + (cosTheta*i) + ((sinTheta*x) + (-1*cosTheta*y) + y));
 				
-				if(xSource < 0 || xSource > width || ySource < 0 || ySource > height)
+				if(xSource < 0 || xSource > width -1 || ySource < 0 || ySource > height -1)
 					newImageData[i][j] = buffer;
 				else
 					newImageData[i][j] = imageData[xSource][ySource];
@@ -134,13 +150,11 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 		if(w < 0 || h < 0)
 			throw new IllegalArgumentException();
 		
-		// compl�ter
+		// compl?ter
 		AbstractPixel[][] newImageData = new AbstractPixel[h][w];
 		int i, j, sourceY, sourceX;
 		double facteurY = (double)h/(double)height;
 		double facteurX = (double)w/(double)width;
-		System.out.println(facteurY);
-		System.out.println(facteurX);
 		
 		for (i = 0; i < h; i++){
 			for (j = 0; j < w; j++){
@@ -160,7 +174,7 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void inset(PixelMap pm, int row0, int col0)
 	{
-		// compl�ter
+		// compl?ter
 		for (int i = 0; i < pm.height; i++){
 			for (int j = 0; j < pm.width; j++){
 				if(row0+i < height && col0 + j < width)
@@ -176,7 +190,6 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	{
 		if(h < 0 || w < 0) return;
 		
-		// compl�ter	
 		AbstractPixel[][] newImageData = new AbstractPixel[h][w];
 		int i,j;		
 		for(i = 0; i < h; i++){
@@ -197,7 +210,7 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void translate(int rowOffset, int colOffset)
 	{
-		// compl�ter
+		// compl?ter
 		AbstractPixel[][] newImageData = new AbstractPixel[height][width];
 		int i, j;
 		for (i = 0; i < height; i++){
@@ -223,10 +236,12 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 		if(zoomFactor < 1.0)
 			throw new IllegalArgumentException();
 		
-		// compl�ter
+		// compl?ter
 		AbstractPixel[][] newImageData = new AbstractPixel[height][width]; 
-		double upperCornerX = (x-width)/(2*zoomFactor);			
-		double upperCornerY = (y-height)/(2*zoomFactor);
+		//double upperCornerX = (x-width)/(2*zoomFactor);			
+		//double upperCornerY = (y-height)/(2*zoomFactor);
+		double upperCornerX = x - (width/zoomFactor);		
+		double upperCornerY = y - (height/zoomFactor);	
 		
 		if(upperCornerX < 0)
 			upperCornerX=0;
@@ -257,14 +272,20 @@ public class PixelMapPlus extends PixelMap implements ImageOperations
 	 */
 	public void replaceColor(AbstractPixel min, AbstractPixel max,
 			AbstractPixel newPixel) {
-		// compl�ter
+		// compl?ter
 		int i,j;
+
 		for (i = 0; i < height; i++){
 			for(j = 0; j < width; j++){
-				if(min.compareTo(imageData[i][j]) == -1 && imageData[i][j].compareTo(max) == -1){
+				if(imageData[i][j].compareTo(min) == 1
+				&& imageData[i][j].compareTo(max) == -1
+				){
 					imageData[i][j] = newPixel;
+				
 				}
 			}
 		}
 	}
+	
 }
+

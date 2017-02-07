@@ -41,7 +41,6 @@ public class Main
 		PixelMapPlus hpmp = new PixelMapPlus( pmp );
 		hpmp.zoomIn(0, 0, 2);
 		hpmp.resize(hpmp.width/2, hpmp.height/2);
-		/*
 		int[] tMin = new int[3];
 		tMin[0] = 110;
 		tMin[1] = 110;
@@ -73,12 +72,12 @@ public class Main
 		npmp.zoomIn(npmp.getWidth(), npmp.getHeight(), 2);
 		npmp.resize(npmp.width/2, npmp.height/2);
 		npmp.negate();
-		*/
+
 		pmp.inset(hpmp, 0, 0);
 		pmp.inset(gpmp, pmp.getHeight()/2, 0);
 		pmp.inset(bwpmp, 0, pmp.getWidth()/2);
 		pmp.inset(npmp, pmp.getHeight()/2, pmp.getWidth()/2);
-		
+
 		wName = "Edsger Dijkstra";
 		new DisplayImageWindow(wName, pmp);
 

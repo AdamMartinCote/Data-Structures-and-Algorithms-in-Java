@@ -130,7 +130,12 @@ public class FormValidator
 		
 		Random generator = new Random( System.nanoTime() );
 		
-		// compléter
+		// complï¿½ter
+		for ( int i = 0; i < length; i++){
+			charKey[i] = (char)(generator.nextInt(90 - 65 + 1) + 65);
+		}
+		String value = new String(charKey);
+		return value;
 		
 	}
 	
@@ -146,8 +151,11 @@ public class FormValidator
 		
 		Random generator = new Random( System.nanoTime() );
 		
-		// compléter
-		
+		// complï¿½ter
+		for (int i = 0; i < nb; i++){
+			charTransform[i] = generator.nextInt( 9 + 1 );
+		}
+		return charTransform;
 	}
 
 }

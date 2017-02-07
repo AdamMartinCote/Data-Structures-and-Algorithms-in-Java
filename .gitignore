@@ -7,8 +7,14 @@
 *.jar
 *.war
 *.ear
-/usagers/palace/INF2010/tp_2010/.metadata
-/usagers/palace/INF2010/tp_2010/RemoteSystemsTempFiles
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# ajouté Adam:
+# fichiers propres à Éclipse:
+.metadata
+.recommenders
+
+# fichier backup de gedit (linux)
+*~
