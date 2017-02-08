@@ -6,9 +6,9 @@ public class LinkedListQueue<AnyType> implements Queue<AnyType>
 	private class Node<AnyType> 
 	{
 		private AnyType data;
-		private Node next;
+		private Node<AnyType> next;
 		
-		public Node(AnyType data, Node next) 
+		public Node(AnyType data, Node<AnyType> next) 
 		{
 			this.data = data;
 			this.next = next;
@@ -31,7 +31,8 @@ public class LinkedListQueue<AnyType> implements Queue<AnyType>
 	}
    
 	private int size = 0;		//Nombre d'elements dans la file.
-	private Node<AnyType> last;	//Dernier element de la liste
+	private Node<AnyType> first = null;	
+	private Node<AnyType> last = null;	//Dernier element de la liste
 	
 	//Indique si la file est vide
 	public boolean empty() 
@@ -47,25 +48,32 @@ public class LinkedListQueue<AnyType> implements Queue<AnyType>
 	
 	//Retourne l'element en tete de file
 	//Retourne null si la file est vide
-	//complexité asymptotique: O(1)
+	//complexitï¿½ asymptotique: O(1)
 	public AnyType peek()
 	{
-		//A completer		
+		return (first == null) ? null : first.data;		
 	}
 	
 	//Retire l'element en tete de file
-	//complexité asymptotique: O(1)
+	//complexitï¿½ asymptotique: O(1)
+	@SuppressWarnings("unchecked")
 	public void pop() throws EmptyQueueException
 	{
 		//A completer
-		
+		if(first == null) throw new EmptyQueueException();
+		else first = first.next;		
 	}
 	
 	//Ajoute un element a la fin de la file
-	//complexité asymptotique: O(1)
+	//complexitï¿½ asymptotique: O(1)
 	public void push(AnyType item)
 	{		
 		//A completer
+		if(last == null)
+			Node<AnyType> secondToLast = new Node<AnyType>(last);
+		last = new Node<AnyType>(item, null);
+		
+		if (size++ == 0)
 		
 	}  
 }
