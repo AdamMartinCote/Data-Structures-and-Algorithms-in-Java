@@ -14,7 +14,7 @@ public class LinkedListQueue<AnyType> implements Queue<AnyType>
 			this.next = next;
 		}
 
-		public void setNext(Node next) 
+		public void setNext(Node<AnyType> next) 
 		{
 			this.next = next;
 		}

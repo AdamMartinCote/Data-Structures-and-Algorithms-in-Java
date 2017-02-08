@@ -32,8 +32,7 @@ public class ArrayQueue<AnyType> implements Queue<AnyType>
 	//complexit� asymptotique: O(1)
 	public AnyType peek()
 	{
-		//A completer
-		return table[startindex];
+		return (size == 0) ? null : table[startindex % table.length];
 	}
 	
 	//Retire l'element en tete de file
@@ -53,8 +52,8 @@ public class ArrayQueue<AnyType> implements Queue<AnyType>
 	//complexit� asymptotique: O(1) ( O(N) lorsqu'un redimensionnement est necessaire )
 	public void push(AnyType item)
 	{
-		if (size + startindex == table.length) resize(2);
-		table[size + startindex] = item;
+		if (size == table.length) resize(2);
+		table[(size + startindex) % table.length] = item;
 		size++;
 	}
    
@@ -66,9 +65,10 @@ public class ArrayQueue<AnyType> implements Queue<AnyType>
 	{
 			AnyType[] tmpTable = (AnyType[]) new Object[table.length * resizeFactor];
 			for(int i = 0; i < table.length; i++){
-				tmpTable[i] = table[i];
+				tmpTable[i] = table[(startindex + i) % table.length]; // set startindex as index 0 of new table
 			}
-			table = tmpTable;			
+			table = tmpTable;	
+			startindex = 0;
 	}   
 }
 
