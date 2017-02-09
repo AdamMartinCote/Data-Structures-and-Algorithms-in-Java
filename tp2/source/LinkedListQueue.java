@@ -31,8 +31,7 @@ public class LinkedListQueue<AnyType> implements Queue<AnyType>
 	}
    
 	private int size = 0;		//Nombre d'elements dans la file.
-	private Node<AnyType> headNode = new Node<AnyType>(null, null);	// this node doesn't hold data
-	private Node<AnyType> lastElement = headNode;
+	private Node<AnyType> last;	//Dernier element de la liste
 	
 	//Indique si la file est vide
 	public boolean empty() 
@@ -51,7 +50,7 @@ public class LinkedListQueue<AnyType> implements Queue<AnyType>
 	//complexit� asymptotique: O(1)
 	public AnyType peek()
 	{
-		return (headNode == lastElement) ? null : headNode.getNext().getData();
+		return (empty()) ? null : last.getNext().getData();
 	}
 	
 	//Retire l'element en tete de file
@@ -59,9 +58,14 @@ public class LinkedListQueue<AnyType> implements Queue<AnyType>
 	public void pop() throws EmptyQueueException
 	{
 		//A completer
-		if(headNode == lastElement) throw new EmptyQueueException();
-		else{ 
-			headNode = headNode.getNext();
+		if (empty()) throw new EmptyQueueException();
+		else if (size == 1) {
+			last = null;
+			size--;
+		}
+		else {
+			Node<AnyType> tmp = last.getNext().getNext();
+			last.setNext(tmp);
 			size--;
 		}
 	}
@@ -70,10 +74,15 @@ public class LinkedListQueue<AnyType> implements Queue<AnyType>
 	//complexit� asymptotique: O(1)
 	public void push(AnyType item)
 	{		
-		//A completer
-		Node<AnyType> insertedNode = new Node<AnyType>(item, null);
-		lastElement.setNext(insertedNode);
-		lastElement = insertedNode;		
+		if (empty()){
+			last = new Node<AnyType>(item, null);	// last node points back to itself (as head)
+			last.setNext(last); 					// need to set after its creation
+		}
+		else {
+			Node<AnyType> newLast = new Node<AnyType>(item, last.getNext());
+			last.setNext(newLast);
+			last = newLast;
+		}
 		size++;
 	}  
 }
