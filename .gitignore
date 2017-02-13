@@ -15,6 +15,8 @@ hs_err_pid*
 # fichiers propres à Éclipse:
 .metadata
 .recommenders
+.settings/
+RemoteSystemsTempFiles/
 
 # fichier backup de gedit (linux)
 *~
