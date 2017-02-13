@@ -7,25 +7,36 @@ public class Lisp {
 	
 /*
  * cette fonction permet de resoudre  une expresion Lisp   
- * le paramètre peut être transformer en token à l'aide de la fonction getTokens(expresion) 
- * NB une seule pile peut être utilisée
+ * le paramï¿½tre peut ï¿½tre transformer en token ï¿½ l'aide de la fonction getTokens(expresion) 
+ * NB une seule pile peut ï¿½tre utilisï¿½e
  * retourn "double" le resultat de l'expresion 
 */
 static public  double solve(String expresion){
 		Stack<String> stack = new Stack<String>();
-		//A complete
+		
+		
 	
 }			
 /*
- * cette fonction vérifier si une expression est équilibree 
- * i.e. toutes parenthèse ouverte à une parenthèse fermante
- * N.B: une seule pile peut être utilisée 
+ * cette fonction vï¿½rifier si une expression est ï¿½quilibree 
+ * i.e. toutes parenthï¿½se ouverte ï¿½ une parenthï¿½se fermante
+ * N.B: une seule pile peut ï¿½tre utilisï¿½e 
  * return true si equilibree, false sionon
  */
 
 static public boolean isEquilibre(String expresion){		
 	Stack<String> stack = new Stack<String>();
-	//A completer 
+
+	for(int i = 0; i < expresion.length(); i++){
+		if(expresion.charAt(i) == '(')
+			stack.push("(");
+		else if(expresion.charAt(i) == ')' && stack.peek() == "(")
+			stack.pop();
+		else if(expresion.charAt(i) == ')' && stack.peek() != "(")
+			return false;
+	}
+	
+	return stack.empty();
 }
 
 /*
