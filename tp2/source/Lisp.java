@@ -14,8 +14,40 @@ public class Lisp {
 static public  double solve(String expresion){
 		Stack<String> stack = new Stack<String>();
 		
+		double resultat = 0;
+		double operande = 0;
+		String tmp = "";
 		
-	
+		for(int i = 0; i < expresion.length(); i++){
+			if(expresion.charAt(i) == ')'){
+				operande = Double.parseDouble(stack.pop());
+				if(stack.peek().matches("^\\s*$"))
+					stack.pop();
+				resultat = Double.parseDouble(stack.pop());
+				switch (stack.peek()){
+					case "+": resultat += operande;
+								break;
+					case "-": resultat -= operande;
+								break;
+					case "*": resultat *= operande;
+								break;
+					case "/": resultat /= operande;
+								break;
+				}
+				stack.pop();
+				stack.pop();
+				stack.push(String.valueOf(resultat));
+				
+			}
+				//"^-?\\d+$"
+			else if(String.valueOf(expresion.charAt(i)).matches("^-?\\d+$") && stack.peek().matches("^-?\\d+$") || stack.peek().matches("^[0-9]+(.|,)?[0-9]?$")){
+				tmp = stack.pop() + String.valueOf(expresion.charAt(i));
+				stack.push(tmp);
+			}
+			else
+				stack.push(String.valueOf(expresion.charAt(i)));	
+		}		
+	return resultat;
 }			
 /*
  * cette fonction v�rifier si une expression est �quilibree 
@@ -30,10 +62,11 @@ static public boolean isEquilibre(String expresion){
 	for(int i = 0; i < expresion.length(); i++){
 		if(expresion.charAt(i) == '(')
 			stack.push("(");
+		else if(expresion.charAt(i) == ')' && stack.empty())
+			return false;
 		else if(expresion.charAt(i) == ')' && stack.peek() == "(")
 			stack.pop();
-		else if(expresion.charAt(i) == ')' && stack.peek() != "(")
-			return false;
+		
 	}
 	
 	return stack.empty();
