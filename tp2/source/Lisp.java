@@ -4,28 +4,36 @@ import java.util.Vector;
 
 public class Lisp {
 
-	
 /*
  * cette fonction permet de resoudre  une expresion Lisp   
  * le param�tre peut �tre transformer en token � l'aide de la fonction getTokens(expresion) 
  * NB une seule pile peut �tre utilis�e
  * retourn "double" le resultat de l'expresion 
 */
-static public  double solve(String expresion){
+static public double solve(String expresion){
 		Stack<String> stack = new Stack<String>();
 		
 		double resultat = 0;
 		double operande = 0;
+		double operande3 = 0;
 		String tmp = "";
 		
+		System.out.println(expresion);
 		for(int i = 0; i < expresion.length(); i++){
 			if(expresion.charAt(i) == ')'){
+				if(stack.peek().matches("\\s")) stack.pop();
 				operande = Double.parseDouble(stack.pop());
-				if(stack.peek().matches("^\\s*$"))
-					stack.pop();
+				System.out.println("operande:" + operande);
+				// remove whitespace if present
+				if(stack.peek().matches("\\s")) stack.pop();
 				resultat = Double.parseDouble(stack.pop());
+				System.out.println("resultat:" + resultat);
+				if(stack.peek().matches("\\s")) stack.pop();
+				if(stack.peek().matches("^-?\\d+\\.?\\d*")) operande3 = Double.parseDouble(stack.pop());
+				if(stack.peek().matches("\\s")) stack.pop();
 				switch (stack.peek()){
-					case "+": resultat += operande;
+					case "+": resultat += operande + operande3;
+								operande3 = 0;
 								break;
 					case "-": resultat -= operande;
 								break;
@@ -36,11 +44,18 @@ static public  double solve(String expresion){
 				}
 				stack.pop();
 				stack.pop();
+				System.out.println("resultat pushé:" + resultat);
+				System.out.println("----");
 				stack.push(String.valueOf(resultat));
+				stack.push(" "); // for safety, otherwise next operand could be concatenated 
 				
 			}
 				//"^-?\\d+$"
-			else if(String.valueOf(expresion.charAt(i)).matches("^-?\\d+$") && stack.peek().matches("^-?\\d+$") || stack.peek().matches("^[0-9]+(.|,)?[0-9]?$")){
+			else if(
+					String.valueOf(expresion.charAt(i)).matches("[\\d\\.]") && 
+					stack.peek().matches("^-?\\d+\\.?\\d*$")
+					)
+			{
 				tmp = stack.pop() + String.valueOf(expresion.charAt(i));
 				stack.push(tmp);
 			}
