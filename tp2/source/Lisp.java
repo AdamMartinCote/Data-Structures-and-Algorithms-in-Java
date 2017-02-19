@@ -4,79 +4,109 @@ import java.util.Vector;
 
 public class Lisp {
 
-/*
- * cette fonction permet de resoudre  une expresion Lisp   
- * le param�tre peut �tre transformer en token � l'aide de la fonction getTokens(expresion) 
- * NB une seule pile peut �tre utilis�e
- * retourn "double" le resultat de l'expresion 
-*/
-static public double solve(String expresion){
-	Stack<String> stack = new Stack<String>();
-	for (int i = expresion.length() -1; i >= 0 ; i++){
-		if (expresion.)
-	}
-}			
-/*
- * cette fonction v�rifier si une expression est �quilibree 
- * i.e. toutes parenth�se ouverte � une parenth�se fermante
- * N.B: une seule pile peut �tre utilis�e 
- * return true si equilibree, false sionon
- */
+	/*
+	 * cette fonction permet de resoudre une expresion Lisp le param�tre peut
+	 * �tre transformer en token � l'aide de la fonction getTokens(expresion) NB
+	 * une seule pile peut �tre utilis�e retourn "double" le resultat de
+	 * l'expresion
+	 */
+	static public double solve(String expresion) {
+		Stack<String> stack = new Stack<String>();
 
-static public boolean isEquilibre(String expresion){		
-	Stack<String> stack = new Stack<String>();
+		double number = 0;
 
-	for(int i = 0; i < expresion.length(); i++){
-		if(expresion.charAt(i) == '(')
-			stack.push("(");
-		else if(expresion.charAt(i) == ')' && stack.empty())
-			return false;
-		else if(expresion.charAt(i) == ')' && stack.peek() == "(")
-			stack.pop();
-		
-	}
-	
-	return stack.empty();
-}
-
-/*
- * fonction transforme une expresion (String) lisp en tokens (Vector<String>)
- */
-static public Vector<String> getTokens(String expresion){
-	
-	Vector<String> vectorOfTokens=new Vector<String>();
-	int lenght=expresion.length();
-	String token="",number="";
-	//==
-	for(int i=lenght-1;i>=0;i--) {
-		//
-		token=String.valueOf(expresion.charAt(i));
-		if(token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/")){
-			if(!number.isEmpty()){
-				vectorOfTokens.addElement(number);
-				number="";	
-			}
-			vectorOfTokens.addElement(token);
-		}else if(token.equals(")")|| token.equals("(") ){
-			if(!number.isEmpty()){
-				vectorOfTokens.addElement(number);
-				number="";	
-			}	
-			vectorOfTokens.addElement(token);				
-		}else if(token.equals(" ")){
-			if(!number.isEmpty()){
-				vectorOfTokens.addElement(number);
-				number="";	
-			}	
-		}else if(!token.equals(" ")){
-			number=token+number;		
+		Vector<String> vec = getTokens(expresion);
+		Collections.reverse(vec);
+		for (String token : vec) {
+			if (token.equals("+") && !stack.empty()) {
+				while (!stack.peek().equals(")"))
+					number += Double.parseDouble(stack.pop());
+				stack.pop(); // get rid of the ")"
+				stack.push(Double.toString(number));
+				number = 0;
+			} else if (token.equals("-") && !stack.empty()) {
+				number = Double.parseDouble(stack.pop());
+				number -= Double.parseDouble(stack.pop());
+				stack.pop(); // get rid of the ")"
+				stack.push(Double.toString(number));
+				number = 0;
+			} else if (token.equals("*") && !stack.empty()) {
+				number = Double.parseDouble(stack.pop());
+				number *= Double.parseDouble(stack.pop());
+				stack.pop(); // get rid of the ")"
+				stack.push(Double.toString(number));
+				number = 0;
+			} else if (token.equals("/") && !stack.empty()) {
+				number = Double.parseDouble(stack.pop());
+				number /= Double.parseDouble(stack.pop());
+				stack.pop(); // get rid of the ")"
+				stack.push(Double.toString(number));
+				number = 0;
+			} else if (token.equals("("))
+				;
+			else
+				stack.push(token);
 		}
+		return Double.parseDouble(stack.pop());
 	}
-	// invert vectorOfTokens;
-	 Collections.reverse(vectorOfTokens);
-	
-	return vectorOfTokens;
-}
+	/*
+	 * cette fonction v�rifier si une expression est �quilibree i.e. toutes
+	 * parenth�se ouverte � une parenth�se fermante N.B: une seule pile peut
+	 * �tre utilis�e return true si equilibree, false sionon
+	 */
 
+	static public boolean isEquilibre(String expresion) {
+		Stack<String> stack = new Stack<String>();
+
+		for (int i = 0; i < expresion.length(); i++) {
+			if (expresion.charAt(i) == '(')
+				stack.push("(");
+			else if (expresion.charAt(i) == ')' && stack.empty())
+				return false;
+			else if (expresion.charAt(i) == ')' && stack.peek() == "(")
+				stack.pop();
+		}
+		return stack.empty();
+	}
+
+	/*
+	 * fonction transforme une expresion (String) lisp en tokens
+	 * (Vector<String>)
+	 */
+	static public Vector<String> getTokens(String expresion) {
+
+		Vector<String> vectorOfTokens = new Vector<String>();
+		int lenght = expresion.length();
+		String token = "", number = "";
+		// ==
+		for (int i = lenght - 1; i >= 0; i--) {
+			//
+			token = String.valueOf(expresion.charAt(i));
+			if (token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/")) {
+				if (!number.isEmpty()) {
+					vectorOfTokens.addElement(number);
+					number = "";
+				}
+				vectorOfTokens.addElement(token);
+			} else if (token.equals(")") || token.equals("(")) {
+				if (!number.isEmpty()) {
+					vectorOfTokens.addElement(number);
+					number = "";
+				}
+				vectorOfTokens.addElement(token);
+			} else if (token.equals(" ")) {
+				if (!number.isEmpty()) {
+					vectorOfTokens.addElement(number);
+					number = "";
+				}
+			} else if (!token.equals(" ")) {
+				number = token + number;
+			}
+		}
+		// invert vectorOfTokens;
+		Collections.reverse(vectorOfTokens);
+
+		return vectorOfTokens;
+	}
 
 }
