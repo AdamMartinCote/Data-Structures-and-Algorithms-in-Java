@@ -3,8 +3,12 @@ import java.io.IOException;
 public class LispMain {
 	public static void main(String[] args) throws IOException {
 
-		String[] tests = { "(*3(+(+5 5)(/10 2))))", "(*3(+(+5 5))(/10 2)))", "(*3(+(+5 5)(/10 2)))",
-				"(+3(+(+5.5 5)(/10 2)))", "(*3(+( + 1(-1 2)22)(+5 0)(/10 2)))" };
+		String[] tests = {
+				"(*3(+(+5 5)(/10 2))))",
+				"(*3(+(+5 5))(/10 2)))",
+				"(*3(+(+5 5)(/10 2)))",
+				"(+3(+(+5.5 5)(/10 2)))",
+				"(*3(+( + 1(-1 2)22)(+5 0)(/10 2)))" };
 		// test des expréssions
 		System.out.println("Tests de parenthèses:\n ");
 		for (int t = 0; t < tests.length; t++) {

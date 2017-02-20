@@ -1,3 +1,12 @@
+
+/**
+ * Lisp.java
+ * 
+ * INF2010 - lab 2
+ * 
+ * @author Adam Martin-Côté & Pascal Lacasse
+ *
+ */
 import java.util.Collections;
 import java.util.Stack;
 import java.util.Vector;
@@ -5,10 +14,15 @@ import java.util.Vector;
 public class Lisp {
 
 	/*
-	 * cette fonction permet de resoudre une expresion Lisp le param�tre peut
-	 * �tre transformer en token � l'aide de la fonction getTokens(expresion) NB
-	 * une seule pile peut �tre utilis�e retourn "double" le resultat de
-	 * l'expresion
+	 * cette fonction permet de resoudre une expresion Lisp le param�tre peut �tre transformer en token � l'aide de la fonction getTokens(expresion) NB une
+	 * seule pile peut �tre utilis�e retourn "double" le resultat de l'expresion
+	 */
+
+	/**
+	 * Évalue une s-expression et retourne le résultat
+	 * 
+	 * @param String
+	 * @return double
 	 */
 	static public double solve(String expresion) {
 		Stack<String> stack = new Stack<String>();
@@ -16,19 +30,21 @@ public class Lisp {
 		double number = 0;
 
 		Vector<String> vec = getTokens(expresion);
+
+		// on inverse la chaine pour obtenir les opérateurs après les opérandes
 		Collections.reverse(vec);
 		for (String token : vec) {
 			if (token.equals("+") && !stack.empty()) {
-				while (!stack.peek().equals(")"))
+				while (!stack.peek().equals(")"))				// accounts for multiple operands multiplications
 					number += Double.parseDouble(stack.pop());
-				stack.pop(); // get rid of the ")"
+				stack.pop(); 									// get rid of the ")"
 				stack.push(Double.toString(number));
 				number = 0;
 			} else if (token.equals("-") && !stack.empty()) {
-				number = Double.parseDouble(stack.pop());
-				number -= Double.parseDouble(stack.pop());
-				stack.pop(); // get rid of the ")"
-				stack.push(Double.toString(number));
+				number = Double.parseDouble(stack.pop());		// 1st operand
+				number -= Double.parseDouble(stack.pop());		// 2nd operand
+				stack.pop(); 									// get rid of the ")"
+				stack.push(Double.toString(number));			// push result on stack
 				number = 0;
 			} else if (token.equals("*") && !stack.empty()) {
 				number = Double.parseDouble(stack.pop());
@@ -49,12 +65,13 @@ public class Lisp {
 		}
 		return Double.parseDouble(stack.pop());
 	}
-	/*
-	 * cette fonction v�rifier si une expression est �quilibree i.e. toutes
-	 * parenth�se ouverte � une parenth�se fermante N.B: une seule pile peut
-	 * �tre utilis�e return true si equilibree, false sionon
-	 */
 
+	/**
+	 * Évalue la validité d'une s-expression par une comparaison du nombre de parenthèses ouvrantes et fermantes
+	 * 
+	 * @param String
+	 * @return boolean
+	 */
 	static public boolean isEquilibre(String expresion) {
 		Stack<String> stack = new Stack<String>();
 
@@ -70,8 +87,7 @@ public class Lisp {
 	}
 
 	/*
-	 * fonction transforme une expresion (String) lisp en tokens
-	 * (Vector<String>)
+	 * fonction transforme une expresion (String) lisp en tokens (Vector<String>)
 	 */
 	static public Vector<String> getTokens(String expresion) {
 
