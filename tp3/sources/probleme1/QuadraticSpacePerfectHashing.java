@@ -31,22 +31,24 @@ public class QuadraticSpacePerfectHashing<AnyType> {
 
 	public boolean containsKey(int key) {
 		// A completer
+		return (items[key] != null);
 
 	}
 
 	public boolean containsValue(AnyType x) {
 		// A completer
+		return (items[((a * x.hashCode() + b) % p) % items.length] != null);
 
 	}
 
 	public void remove(AnyType x) {
 		// A completer
-
+		items[((a * x.hashCode() + b) % p) % items.length] = null;
 	}
 
 	public int getKey(AnyType x) {
 		// A completer
-
+		return ((a * x.hashCode() + b) % p) % items.length;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -59,38 +61,23 @@ public class QuadraticSpacePerfectHashing<AnyType> {
 		}
 		if (array.size() == 1) {
 			a = b = 0;
-
-			// A completer
+			items[0] = array.get(0);
 			return;
 		}
 
 		do {
 			items = null;
 
-			// A completer
+			int m = array.size() * array.size();
 
-		} while (collisionExists(array));
-	}
-
-	@SuppressWarnings("unchecked")
-	private void AllocateMemory(ArrayList<AnyType> array) {
-		Random generator = new Random(System.nanoTime());
-
-		if (array == null || array.size() == 0) {
-			// A completer
-			return;
-		}
-		if (array.size() == 1) {
-			a = b = 0;
+			a = generator.nextInt(p - 1) + 1;	// [1..p]
+			b = generator.nextInt(p);			// [0..p]
+			items = (AnyType[]) new Object[m];
 
 			// A completer
-			return;
-		}
-
-		do {
-			items = null;
-
-			// A completer
+			for (int i = 0; i < array.size(); i++) {
+				items[((a * array.get(i).hashCode() + b) % p) % m] = array.get(i);
+			}
 
 		} while (collisionExists(array));
 	}
@@ -98,14 +85,22 @@ public class QuadraticSpacePerfectHashing<AnyType> {
 	@SuppressWarnings("unchecked")
 	private boolean collisionExists(ArrayList<AnyType> array) {
 		// A completer
-
-		return false;
+		int count = 0;
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] != null)
+				count++;
+		}
+		return (count != array.size());
 	}
 
 	public String toString() {
 		String result = "";
-
 		// A completer
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] != null)
+				result += "(" + i + ", " + items[i] + "),";
+		}
+		result = result.substring(0, result.length() - 1) + ".";
 
 		return result;
 	}
