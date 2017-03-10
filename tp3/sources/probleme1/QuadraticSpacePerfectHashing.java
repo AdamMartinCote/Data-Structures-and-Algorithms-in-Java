@@ -29,25 +29,24 @@ public class QuadraticSpacePerfectHashing<AnyType> {
 		return items.length;
 	}
 
+	public AnyType[] getArray(){
+		return items;
+	}
+	
 	public boolean containsKey(int key) {
-		// A completer
-		return (items[key] != null);
-
+		//return (key > p) ? false : (items[key] != null);
+		return (items[((a*key+b)%p)% items.length] != null);
 	}
 
 	public boolean containsValue(AnyType x) {
-		// A completer
 		return (items[((a * x.hashCode() + b) % p) % items.length] != null);
-
 	}
 
 	public void remove(AnyType x) {
-		// A completer
 		items[((a * x.hashCode() + b) % p) % items.length] = null;
 	}
 
 	public int getKey(AnyType x) {
-		// A completer
 		return ((a * x.hashCode() + b) % p) % items.length;
 	}
 
@@ -56,11 +55,12 @@ public class QuadraticSpacePerfectHashing<AnyType> {
 		Random generator = new Random(System.nanoTime());
 
 		if (array == null || array.size() == 0) {
-			// A completer
+			items = null;
 			return;
 		}
 		if (array.size() == 1) {
 			a = b = 0;
+			items = (AnyType[]) new Object[1];
 			items[0] = array.get(0);
 			return;
 		}
@@ -74,9 +74,10 @@ public class QuadraticSpacePerfectHashing<AnyType> {
 			b = generator.nextInt(p);			// [0..p]
 			items = (AnyType[]) new Object[m];
 
-			// A completer
+
 			for (int i = 0; i < array.size(); i++) {
-				items[((a * array.get(i).hashCode() + b) % p) % m] = array.get(i);
+				//items[((a * array.get(i).hashCode() + b) % p) % m] = array.get(i);
+				items[getKey(array.get(i))] = array.get(i);
 			}
 
 		} while (collisionExists(array));
