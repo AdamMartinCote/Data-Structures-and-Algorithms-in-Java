@@ -3,8 +3,39 @@ package probleme2;
 
 public class MyHashMap<KeyType, ValueType>
 {
-   private DoubleHashingTable< Entry<KeyType, ValueType> > items;
+   private DoubleHashingTable< Entry<KeyType, ValueType>[] > items;
 
+   private class DoubleHashingTable<Entry>{
+	   private Entry[] table;	// main entry container
+	   private int R;
+
+	   public DoubleHashingTable(Entry[] e){
+		   R = findHighestPrime(e.length - 1);
+		   
+		   for (Entry i : e){
+			   int h1 = i.hashCode() % e.length;
+			   int h2 = R - (i.hashCode() % R);
+			   int position = (h1 + h2/* *i ????*/) % e.length;
+		   }		   
+	   }
+		private static int findHighestPrime(int n){
+			int i;
+			boolean isPrime;
+			for(i = n; i > 0; i--){	// a loop for each number 
+				isPrime = true;
+				for (int j = i - 1; j > 1; j--){	// tell if prime
+					if ((i % j) == 0){
+						isPrime = false;
+						break;
+					}
+				}
+				if (isPrime) return i;
+			}
+			return 0;
+		}
+   }
+   
+   
    public MyHashMap( )
    {
       items = new DoubleHashingTable< Entry<KeyType,ValueType> >();
