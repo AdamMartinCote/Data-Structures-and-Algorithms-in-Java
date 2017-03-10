@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class LinearSpacePerfectHashing<AnyType>
 {
-	static int p = 46337;
+	static int p = 400;//46337;
 
 	QuadraticSpacePerfectHashing<AnyType>[] data;
 	int a, b;
@@ -47,7 +47,7 @@ public class LinearSpacePerfectHashing<AnyType>
 			a = generator.nextInt(p - 1) + 1;	// [1..p]
 			b = generator.nextInt(p);			// [0..p]
 			
-			data = new QuadraticSpacePerfectHashing[array.size()];
+			data = new QuadraticSpacePerfectHashing[m];
 			
 			// for each elements of "array": if the alveol is empty -> create a quadratic with that value
 			// 	if this alveol is not empty: go throught the whole quadratic, keeping values in a tmp arrayList
@@ -65,6 +65,7 @@ public class LinearSpacePerfectHashing<AnyType>
 					for(AnyType item : data[getKey(itemToInsert)].getArray()){
 						if(item != null) tmp.add(item);
 					}
+					tmp.add(itemToInsert);
 					data[getKey(itemToInsert)] = new QuadraticSpacePerfectHashing<AnyType>(tmp);
 				}
 			}
@@ -110,7 +111,7 @@ public class LinearSpacePerfectHashing<AnyType>
 		
 		// A completer
 		for(QuadraticSpacePerfectHashing<AnyType> item : data){
-			result += "(" + item.toString() + "),";
+			if(item != null) result += "(" + item.toString() + "),";
 		}
 		if(result.length() > 0) result = result.substring(0, result.length() - 1) + ".";
 		
