@@ -11,7 +11,6 @@ public class BinaryTree<AnyType> {
 	}
 	
 	
-	
 	@SuppressWarnings("unchecked")
 	private void insert(Node<AnyType> node, AnyType elem) {
 		// A completer
