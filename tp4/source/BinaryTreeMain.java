@@ -5,7 +5,7 @@ public class BinaryTreeMain
    public static void main(String[] args)
    {
       // Valeurs a inserer dans l'arbre
-      int val[] = {50, 40, 20,30,70,60,80};
+      int val[] = {50, 40, 20,30,70,60,80,1,2,3};
       
       // Creation de l'arbre
       BinaryTree<Integer> binTree = new BinaryTree<Integer>();

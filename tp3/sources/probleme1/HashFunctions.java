@@ -112,7 +112,6 @@ public class HashFunctions
         {
             pfhash.SetArray( randomIntegers( nbElements ) );
             System.out.println( nbElements + "\t" + pfhash.Size() );
-            //System.out.println(pfhash.toString());
         }
     }
     
