@@ -1,0 +1,46 @@
+|__53 , black
+
+|__53 , black
+   |__null , black
+   |__77 , red
+
+|__53 , black
+   |__29 , red
+   |__77 , red
+
+|__53 , black
+   |__29 , black
+   |__77 , black
+      |__64 , red
+      |__null , black
+
+|__53 , black
+   |__29 , black
+   |__70 , black
+      |__64 , red
+      |__77 , red
+
+|__53 , black
+   |__29 , black
+   |   |__15 , red
+   |   |__null , black
+   |__70 , black
+      |__64 , red
+      |__77 , red
+
+|__53 , black
+   |__29 , black
+   |   |__15 , red
+   |   |__30 , red
+   |__70 , black
+      |__64 , red
+      |__77 , red
+
+Recherche valeur 15 : Noeud trouvé.
+Recherche valeur 99 : Noeud introuvable.
+
+PreOrdre [ (53 , black) ; (29 , black) ; (15 , red) ; (30 , red) ; (70 , black) ; (64 , red) ; (77 , red) ]
+PostOrdre [ (15 , red) ; (30 , red) ; (29 , black) ; (64 , red) ; (77 , red) ; (70 , black) ; (53 , black) ]
+AscendingOrdre [ (15 , red) ; (29 , black) ; (30 , red) ; (53 , black) ; (64 , red) ; (70 , black) ; (77 , red) ]
+DescendingOrdre [ (77 , red) ; (70 , black) ; (64 , red) ; (53 , black) ; (30 , red) ; (29 , black) ; (15 , red)  ]
+LevelOrdre [ (53 , black) ; (29 , black) ; (70 , black) ; (15 , red) ; (30 , red) ; (64 , red) ; (77 , red) ]
