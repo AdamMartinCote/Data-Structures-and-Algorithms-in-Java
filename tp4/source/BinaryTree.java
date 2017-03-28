@@ -1,6 +1,6 @@
 
 public class BinaryTree<AnyType extends Number & Comparable <?super AnyType>> {
-	private Node<AnyType> root = null; // Racine de l'arbre
+	private Node<AnyType> root = null;
 
 	// insert element in arbre 
 	public void insert (AnyType elem) {
@@ -15,7 +15,7 @@ public class BinaryTree<AnyType extends Number & Comparable <?super AnyType>> {
 	private void insert(Node<AnyType> node, AnyType elem) {
 		// Si la valeur est de la node est plus grande que l'élément 
 		// On ajoute a gauche, sinon a droite
-		if(node.val.compareTo(elem)>0){
+		if(node.val.compareTo(elem) > 0){
 			//Si l'enfant est null on ajoute une node avec l'élément comme valeur
 			if(node.left == null){
 				node.left = new Node<AnyType>(elem);
@@ -31,8 +31,8 @@ public class BinaryTree<AnyType extends Number & Comparable <?super AnyType>> {
 				node.right = new Node<AnyType>(elem);
 			}
 			else{
-			//Sinon on utilise insert récursivement
-			insert(node.right, elem);
+				//Sinon on utilise insert récursivement
+				insert(node.right, elem);
 			}
 		}
 	}
@@ -57,6 +57,7 @@ public class BinaryTree<AnyType extends Number & Comparable <?super AnyType>> {
 		// On créé 2 competeur, un pour la gauche et l'autre pour la droite
 		int compteur1 = 0;
 		int compteur2 = 0;
+
 		//Si la node a gauche n'est pas nulle on incrémente le compteur de gauche
 		//et on utilise getHauteur récursivement
 		if(tree.left != null){
@@ -139,9 +140,6 @@ public class BinaryTree<AnyType extends Number & Comparable <?super AnyType>> {
 			right = null;
 			left = null;
 		}
-
 	}
-
-
 }
 

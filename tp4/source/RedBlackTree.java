@@ -6,15 +6,14 @@ public class RedBlackTree<T extends Comparable<? super T> >
 	enum ChildType{ left, right }
 	private RBNode<T> root;  // Racine de l'arbre
    
-   public RedBlackTree(){ 
-      root = null;
+   public RedBlackTree(){
+       root = null;
    }
    
    public void printFancyTree(){
       printFancyTree( root, "", ChildType.right);
    }
    private void printFancyTree( RBNode<T> t, String prefix, ChildType myChildType){
-	  //
       System.out.print( prefix + "|__"); // un | et trois _  
       if( t != null ){
          boolean isLeaf = (t.isNil()) || ( t.leftChild.isNil() && t.rightChild.isNil() );
@@ -33,37 +32,36 @@ public class RedBlackTree<T extends Comparable<? super T> >
          System.out.print("null\n");
    }
 /*
- * recherche d'une clé
+ * recherche d'une clï¿½
  */
-   public T find(int key){
+    public T find(int key){
       return find(root, key);
    }
-   
+
    @SuppressWarnings("unchecked")
-private T find(RBNode<T> current, int key){
+    private T find(RBNode<T> current, int key){
+       if (current.value == null) return null;
 	   if (current.value.equals(key))
 		   return current.value;
 	   else{
-		   if (current.value < 0 && current.leftChild != null)
+		   if (current.value.compareTo((T) Integer.valueOf(key)) > 0 && current.leftChild != null)
 			   return find(current.leftChild, key);
 		   else if (current.value.compareTo((T) Integer.valueOf(key)) < 0 && current.rightChild != null)
 			   return find(current.rightChild, key);
 		   else 
 			   return null;
 	   }
-		   
-
 	 }
   /*
    * insertion d'une valeur 
    */
    public void insert(T val){
-      insertNode( new RBNode<T>( val ) );
+       insertNode( new RBNode<T>( val ) );
    }
    
    private void insertNode( RBNode<T> newNode ){ 
       if (root == null)  // Si arbre vide
-         root = newNode;
+          root = newNode;
       else{
          RBNode<T> position = root; // On se place a la racine     
          while( true ) // on insere le noeud (ABR standard)
@@ -99,17 +97,18 @@ private T find(RBNode<T> current, int key){
       insertionCase1( X );
       if (insertionCase2(X)) return;
       insertionCase3(X);
-      
-      
+      insertionCase4(X);
+      insertionCase5(X);
    }
    private void insertionCase1 ( RBNode<T> X )
    {
-	   if (X.parent == null) X.setToBlack();
+       if (X.parent == null) X.setToBlack();
    }
 
    private boolean insertionCase2( RBNode<T> X )
    {
-	   if (X.parent == null) return false;
+	   if (X.parent == null)
+	       return false;
 	   return (X.parent.isBlack());	   
    }
 
@@ -134,23 +133,15 @@ private T find(RBNode<T> current, int key){
 	   RBNode<T> parent = X.parent;
 	   RBNode<T> uncle = X.uncle();
 	   RBNode<T> grandParent = X.grandParent();
+	   if(grandParent == null) return;
 	   	   
 	   if(parent.isRed() && uncle.isBlack()){
 		   if (X == parent.leftChild && parent == grandParent.rightChild ){
-			   // rotation à droite autour de p
-			   parent.leftChild = X.rightChild;
-			   X.rightChild = parent;
-			   grandParent.rightChild = X;
-			   
-			   // cas 5 sur enfant de droit de X
+               rotateRight(parent);
 			   insertionCase5(X.rightChild);
 		   }
 		   else if (X == parent.rightChild && parent == grandParent.leftChild ){
-			   // rotation à gauche autour de p
-			   parent.rightChild = X.leftChild;
-			   X.leftChild = parent;
-			   grandParent.leftChild = X;
-			   // cas 5 sur enfant de gauche de X
+               rotateLeft(parent);
 			   insertionCase5(X.leftChild); 
 		   }
 	   }
@@ -161,34 +152,18 @@ private T find(RBNode<T> current, int key){
 	   RBNode<T> parent = X.parent;
 	   RBNode<T> uncle = X.uncle();
 	   RBNode<T> grandParent = X.grandParent();
-	   RBNode<T> grandGrandParent = (X.grandParent().parent != null) ? X.grandParent().parent : null;
-	   
-	   	   
+	   if(grandParent == null) return;
+
 	   if(parent.isRed() && uncle.isBlack()){
 		   // changer couleur de G et P
 		   parent.toggleColor();
 		   grandParent.toggleColor();
 		   
 		   if (X == parent.rightChild && parent == grandParent.rightChild ){
-
-			   // rotation à gauche autour de g
-			   grandParent.rightChild = parent.leftChild;// b -> G
-			   parent.leftChild = grandParent;	// G -> P
-			   if (grandGrandParent.rightChild == grandParent)
-				   grandGrandParent.rightChild = parent;
-			   else
-				   grandGrandParent.leftChild = parent;
-			   
+               rotateLeft(grandParent);
 		   }
 		   else if (X == parent.leftChild && parent == grandParent.leftChild ){
-
-			   // rotation à droite autour de g
-			   grandParent.leftChild = parent.rightChild;
-			   parent.rightChild = grandParent;	
-			   if (grandGrandParent.rightChild == grandParent)
-				   grandGrandParent.rightChild = parent;
-			   else
-				   grandGrandParent.leftChild = parent;
+               rotateRight(grandParent);
 		   }
 	   }
    }
@@ -270,24 +245,58 @@ private T find(RBNode<T> current, int key){
    
    private void printTreePreOrder( RBNode<T> P )
    {
-     // A MODIFIER/COMPLETER
-	 //pour ne pas afficher la virgule apres le dernier element
+       if (P != root)
+           System.out.print(" ; ");
+
+       System.out.print("(" +P.toString() + ")");
+       if(P.leftChild != null && P.leftChild.value != null) printTreePreOrder(P.leftChild);
+       if(P.rightChild != null && P.rightChild.value != null) printTreePreOrder(P.rightChild);
    }
+
    private void printTreePostOrder( RBNode<T> P )
    {
-      // A MODIFIER/COMPLETER
+       if(P.leftChild != null && P.leftChild.value != null) printTreePostOrder(P.leftChild);
+       if(P.rightChild != null && P.rightChild.value != null) printTreePostOrder(P.rightChild);
+       System.out.print("(" +P.toString() + ")");
+       if (P != root)
+           System.out.print(" ; ");
    }
      
    private void printTreeAscendingOrder( RBNode<T> P )
    {
-      // A MODIFIER/COMPLETER
-	   
+       if(P.leftChild != null && P.leftChild.value != null)
+           printTreeAscendingOrder(P.leftChild);
+
+       System.out.print("(" +P.toString() + ")");
+
+       RBNode<T> greatestNode = root;
+       while(greatestNode.rightChild.value != null && greatestNode.value.compareTo(P.value) <= 0){
+           greatestNode = greatestNode.rightChild;
+       }
+       if (!greatestNode.equals(P))
+           System.out.print(" ; ");
+
+       if(P.rightChild != null && P.rightChild.value != null)
+           printTreeAscendingOrder(P.rightChild);
    }
   
    private void printTreeDescendingOrder( RBNode<T> P )
    {
-      // A MODIFIER/COMPLETER
-	   
+       if(P.rightChild != null && P.rightChild.value != null)
+           printTreeDescendingOrder(P.rightChild);
+
+       System.out.print("(" +P.toString() + ")");
+
+       // check if current node is the smallest value
+       RBNode<T> smallestNode = root;
+       while(smallestNode.leftChild.value != null && smallestNode.value.compareTo(P.value) >= 0)
+           smallestNode = smallestNode.leftChild;
+       if (!smallestNode.equals(P))
+           System.out.print(" ; ");
+
+       if(P.leftChild != null && P.leftChild.value != null)
+           printTreeDescendingOrder(P.leftChild);
+
    }
    
    public void printTreeLevelOrder()
@@ -300,12 +309,26 @@ private T find(RBNode<T> current, int key){
          
          Queue<RBNode<T>> q = new LinkedList<RBNode<T>>();
          q.add(root);
-         
-         // A COMPLETER
-		 
-		 
-         System.out.println( " ]");
+         // if root has left child print it
+         // if root has right child, print it
+         // if left has left
+
+         RBNode<T> current = null;
+         while(!q.isEmpty()){
+             current = q.peek();
+             q.remove();
+             if (current != root)
+                 System.out.print(" ; ");
+             System.out.print("(" + current.toString() + ")");
+
+             if(current.leftChild != null && current.leftChild.value != null)
+                 q.add(current.leftChild);
+             if(current.rightChild != null && current.rightChild.value != null)
+                 q.add(current.rightChild);
+         }
+
       }
+      System.out.println(" ]");
       return;
    }
    

@@ -10,7 +10,7 @@ public class RedBlackTreeMain
       
       // Insertion des elements dans l'arbre
       for(int i=0; i<val.length; i++){
-         // insérer cle
+         // insï¿½rer cle
          tree.insert( new Integer( val[i] ) );
          // afficher
           tree.printFancyTree();
@@ -20,14 +20,14 @@ public class RedBlackTreeMain
       Integer n = tree.find(15);
       System.out.print("Recherche valeur 15 : ");
       if ( n != null )  
-        System.out.println("Noeud trouvé."); 
+        System.out.println("Noeud trouvï¿½."); 
       else
         System.out.println("Noeud introuvable.");
       
       n = tree.find(99);
       System.out.print("Recherche valeur 99 : ");
       if(n != null)
-        System.out.println("Noeud trouvé.");
+        System.out.println("Noeud trouvï¿½.");
       else
         System.out.println("Noeud introuvable.");
             
