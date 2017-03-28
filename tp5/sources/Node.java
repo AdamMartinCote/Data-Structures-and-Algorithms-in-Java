@@ -1,15 +1,6 @@
 
 import java.util.ArrayList;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author maitr
- */
 public class Node {
 
     public int ordre;
@@ -59,6 +50,9 @@ public class Node {
     public Node fusion(Node autre) throws DifferentOrderTrees {
 
         // à compléter
+        // verifier que les arbres ont le meme ordre
+        // verifier que les noeuds sont bien des racines (parent == null)
+        // respecter la condition d'ordre du monceau (val parent < val enfant)
         return null;
     }
 

@@ -5,6 +5,7 @@ public class Monceau {
     ArrayList<Node> arbres;
     
     public Monceau() {
+
         arbres = new ArrayList<Node>();
     }
     
