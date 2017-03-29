@@ -49,12 +49,9 @@ public class Node {
 
     public Node fusion(Node autre) throws DifferentOrderTrees {
     	// verifier que les arbres ont le meme ordre
-	    	if(autre.ordre != ordre)
-	    		throw new DifferentOrderTrees();
-    	
-        // verifier que les noeuds sont bien des racines (parent == null)
-
-    	// respecter la condition d'ordre du monceau (val parent < val enfant)
+    	if(autre.ordre != ordre)
+    		throw new DifferentOrderTrees();
+	
     	if(this.parent == null && autre.parent == null && autre.valeur > this.valeur){
     		this.addEnfant(autre);
     		autre.parent = this;
@@ -71,11 +68,11 @@ public class Node {
 
     private void moveUp() {
         Node parentSwap = parent.parent;
-        ArrayList<Node> enfantsSwap = parent.getEnfants()
+        ArrayList<Node> enfantsSwap = parent.getEnfants();
 
         parent.ordre++;
         parent.parent = this;
-        parent.enfants = this.getEnfants()
+        parent.enfants = this.getEnfants();
 
         ordre--;
         parent = parentSwap;
@@ -95,10 +92,15 @@ public class Node {
     public void print(){
         print(this, "");
     }
+    
     private void print(Node currentNode, String prefix) {
-        System.out.print(prefix + "|___" + valeur);
-        for (Node node : currentNode)
-            println(node, "   " + prefix);
+    	if (currentNode == null) return;
+        System.out.println(prefix + "|___" + currentNode.valeur);
+
+        for(int i = 0 ; i < currentNode.getEnfants().size(); i++){
+            if(currentNode.getEnfants().get(i) != null)
+            	print(currentNode.getEnfants().get(i), "    " + prefix);
+        }
     }
 
     public Node findValue(int valeur) {
@@ -107,12 +109,12 @@ public class Node {
     }
     
     public Node findValue (Node n, int valeur) {
-        if (n == valeur) return n;
+        if (n.valeur == valeur) return n;
 
         Node ret;
-        for (int i : enfants){
-            if (i.valeur < valeur) {
-                ret = findValue(i, valeur);
+        for (int i = 0 ; i < n.getEnfants().size(); i++){
+            if (n.getEnfants().get(i).valeur < valeur) {
+                ret = findValue(n.getEnfants().get(i), valeur);
                 if (ret != null) return ret;
             }
         }
