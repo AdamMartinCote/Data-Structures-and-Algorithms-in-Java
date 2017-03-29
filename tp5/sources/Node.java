@@ -48,12 +48,24 @@ public class Node {
     }
 
     public Node fusion(Node autre) throws DifferentOrderTrees {
-
-        // à compléter
-        // verifier que les arbres ont le meme ordre
+    	// verifier que les arbres ont le meme ordre
+	    	if(autre.ordre != ordre)
+	    		throw new DifferentOrderTrees();
+    	
         // verifier que les noeuds sont bien des racines (parent == null)
-        // respecter la condition d'ordre du monceau (val parent < val enfant)
-        return null;
+    	// respecter la condition d'ordre du monceau (val parent < val enfant)
+    	if(this.parent == null && autre.parent == null && autre.valeur > this.valeur){
+    		this.addEnfant(autre);
+    		autre.parent = this;
+    		return this;
+    	}
+    	else if(this.parent == null && autre.parent == null && autre.valeur < this.valeur){
+    		autre.addEnfant(this);
+    		this.parent = autre;
+    		return autre;
+    	}
+    	else
+    		return null;
     }
 
     private void moveUp() {
