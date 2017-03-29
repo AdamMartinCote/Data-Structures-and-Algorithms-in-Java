@@ -52,29 +52,63 @@ public class Node {
         // à compléter
         // verifier que les arbres ont le meme ordre
         // verifier que les noeuds sont bien des racines (parent == null)
+        if (autre.ordre != ordre || parent != null || autre.parent != null) return null;
+
         // respecter la condition d'ordre du monceau (val parent < val enfant)
+
+
         return null;
     }
 
     private void moveUp() {
-        // à compléter
+        Node parentSwap = parent.parent;
+        ArrayList<Node> enfantsSwap = parent.getEnfants()
+
+        parent.ordre++;
+        parent.parent = this;
+        parent.enfants = this.getEnfants()
+
+        ordre--;
+        parent = parentSwap;
+        enfants = enfantsSwap;
     }
 
     public ArrayList<Node> delete() {
-        // à compléter
-        return null;
+        while (this.parent != null)
+            this.moveUp();
+
+        for (Node i : getEnfants())
+            i.parent = null;
+
+        return getEnfants();
     }
 
-    public void print(String tabulation) {
-        // à compléter
+    public void print(){
+        print(this, "");
     }
-    
+    private void print(Node currentNode, String prefix) {
+        System.out.print(prefix + "|___" + valeur);
+        for (Node node : currentNode)
+            println(node, "   " + prefix);
+    }
+
     public Node findValue(int valeur) {
+
         return findValue(this, valeur);
     }
     
     public Node findValue (Node n, int valeur) {
-        // à compléter
+        if (n == valeur) return n;
+
+        Node ret;
+        for (int i : enfants){
+            if (i.valeur < valeur) {
+                ret = findValue(i, valeur);
+                if (ret != null) return ret;
+            }
+        }
+        return null;
     }
+
     
 }

@@ -7,7 +7,7 @@
 
 import java.util.ArrayList;
 
-	class ArbreBinomialTester.java{
+	class ArbreBinomialTester{
 
 	    public static void main(String[] args){
 
