@@ -17,10 +17,12 @@ public class Node {
     }
 
     public Node(int valeur, Node parent) {
-        ordre = 0;
+        ordre = parent.ordre + 1;
         this.valeur = valeur;
         this.parent = parent;
         enfants = new ArrayList<Node>();
+        
+        parent.addEnfant(this);
     }
 
     public int getVal() {
@@ -66,27 +68,77 @@ public class Node {
     		return null;
     }
 
-    private void moveUp() {
-        Node parentSwap = parent.parent;
-        ArrayList<Node> enfantsSwap = parent.getEnfants();
+    /**
+     * Switch the node position with its immediate parent, updating both node's order in the process
+     * this method breaks the order of the heap
+     * 
+     * this function will never be called with parent == null
+     */
+    private void moveUp(){
+    	
+//    	ArrayList<Node> enfantsTMP = enfants;
+//    	Node parentTMP = parent;
+//    	Node grandParent = null;
+//    	if(parent.parent != null)
+//    		grandParent = parent.parent;
+//    	parent = grandParent;
+//    	enfants = new ArrayList<Node>();
+//    	for (Node i : parentTMP.getEnfants()){
+//    		if (i != this)
+//    			enfants.add(i);
+//    	}
+//    	enfants.add(parentTMP);
+//    	ordre--;
+//    	
+//    	if(grandParent != null){
+//    		grandParent.addEnfant(this);
+//    		for (Node i : grandParent.getEnfants()){
+//    			if (i == parentTMP)
+//    				i = null;
+//    		}
+//    	}
+//    	
+//    	parentTMP.parent = this;
+//    	parentTMP.enfants = enfantsTMP;
+//    	parentTMP.ordre++;
+//    	
+//    	System.out.println("------------");
+//    	this.parent.print();
+//    	parentTMP.print();
+//    	System.out.println("------------");
+    	
+    	int tmpValue = parent.getVal();
+    	parent.valeur = valeur;
+    	valeur = tmpValue;
 
-        parent.ordre++;
-        parent.parent = this;
-        parent.enfants = this.getEnfants();
-
-        ordre--;
-        parent = parentSwap;
-        enfants = enfantsSwap;
     }
-
+    
+//    public ArrayList<Node> delete() {
+//    	
+//    	return delete(this);
+//    	
+////        while (this.parent != null)
+////            this.moveUp();
+////
+////        for (Node i : getEnfants())
+////            i.parent = null;
+////
+////        return getEnfants();
+//    }
+    
     public ArrayList<Node> delete() {
-        while (this.parent != null)
-            this.moveUp();
-
-        for (Node i : getEnfants())
-            i.parent = null;
-
-        return getEnfants();
+    	
+    	ArrayList<Node> returnValue;
+    	if (this.parent == null) {
+    		for (Node i : getEnfants())
+    			i.parent = null;
+	        return getEnfants();
+    	}
+    	else {
+    		this.moveUp();
+    		returnValue = this.parent.delete();
+    	}
+    	return returnValue;
     }
 
     public void print(){
@@ -95,7 +147,7 @@ public class Node {
     
     private void print(Node currentNode, String prefix) {
     	if (currentNode == null) return;
-        System.out.println(prefix + "|___" + currentNode.valeur);
+        System.out.println(prefix + "|___" + currentNode.valeur + " (" + currentNode.ordre +")");
 
         for(int i = 0 ; i < currentNode.getEnfants().size(); i++){
             if(currentNode.getEnfants().get(i) != null)
@@ -109,13 +161,15 @@ public class Node {
     }
     
     public Node findValue (Node n, int valeur) {
-        if (n.valeur == valeur) return n;
+        if (n.valeur == valeur) 
+        	return n;
 
         Node ret;
         for (int i = 0 ; i < n.getEnfants().size(); i++){
-            if (n.getEnfants().get(i).valeur < valeur) {
+            if (n.getEnfants().get(i).valeur <= valeur) {
                 ret = findValue(n.getEnfants().get(i), valeur);
-                if (ret != null) return ret;
+                if (ret != null) 
+                	return ret;
             }
         }
         return null;

@@ -10,6 +10,23 @@ import java.util.ArrayList;
 	class ArbreBinomialTester{
 
 	    public static void main(String[] args){
+	    	
+
+	    	//testFusion(); 	
+
+	    	//testFindValue(4);
+
+	    	testDelete(1);
+	    	testDelete(2);
+	    	testDelete(3);
+	    	testDelete(4);
+	    	testDelete(5);
+	    	testDelete(7);
+	    	testDelete(8);
+	    	
+	    }
+	    
+	    private static Node generateHeap1(){
 	    	//monceau1
 	    	Node root1 = new Node(1);
 	    	Node node2 = new Node(2, root1);
@@ -20,18 +37,10 @@ import java.util.ArrayList;
 	    	Node node7 = new Node(7, node5);
 	    	Node node8 = new Node(8, node7);
 	    	
-	    	root1.addEnfant(node2);
-	    	root1.addEnfant(node3);
-	    	root1.addEnfant(node5);
-	    	
-	    	node3.addEnfant(node4);
-	    	
-	    	node5.addEnfant(node6);
-	    	node5.addEnfant(node7);
-	    	
-	    	node7.addEnfant(node8);
-
-	    	//monceau2
+	    	return root1;
+	    }
+	    
+	    private static Node generateHeap2(){
 	    	Node root10 = new Node(2);
 	    	Node node12 = new Node(5, root10);
 	    	Node node13 = new Node(10, root10);
@@ -40,45 +49,57 @@ import java.util.ArrayList;
 	    	Node node16 = new Node(55, node15);
 	    	Node node17 = new Node(33, node15);
 	    	Node node18 = new Node(54, node17);
-	    	
-	    	root10.addEnfant(node12);
-	    	root10.addEnfant(node13);
-	    	root10.addEnfant(node15);
-	    	                    
-	    	node13.addEnfant(node14);
-	    	                    
-	    	node15.addEnfant(node16);
-	    	node15.addEnfant(node17);
-	    	                    
-	    	node17.addEnfant(node18);
-	    	
+
+	    	return root10;
+	    }
+	    
+    	/////////////////////////////
+    	// Test de la fonction fusion
+    	/////////////////////////////
+	    private static void testFusion(){
+	    	Node root1 = generateHeap1();
+	    	Node root10 = generateHeap2();
 	    	try{
 	    		Node resultatFusion = root1.fusion(root10);
 	    		resultatFusion.print();
 	    	}catch(DifferentOrderTrees e){
-	    		System.out.println(e.getMessage());
+	    		System.out.println("erreur ordre different: " + e.getMessage());
 	    	}catch(Throwable e){
-	    		System.out.println("hmmm...");
+	    		System.out.println("erreur inconnue lors du test de fusion");
 	    	}
+	    }
+	    
+    	////////////////////////////////
+    	// Test de la fonction findValue
+    	////////////////////////////////
+	    private static void testFindValue(int valueToSearch){
+	    	Node root1 = generateHeap1();
+	    	Node returnedNode = root1.findValue(valueToSearch);
 	    	
-	    	System.out.println("--------------");
-	    	ArrayList<Node> t = node16.delete();	//revoir delete()
-	    	System.out.println(t.size());
-	    	//for (int i = 0; i < t.size(); i++){
-	    	//	t.get(i).print();
-	    	//}
+	    	if (returnedNode != null)
+	    		System.out.println(returnedNode.getVal());
+	    	else
+	    		System.out.println("findValue(" + valueToSearch + ") returned null");
+	    	
+	    }
+	    
+    	/////////////////////////////
+    	// Test de la fonction delete
+    	/////////////////////////////
+	    private static void testDelete(int valueToDelete){
+	    	Node root1 = generateHeap1();
 
-	    	//try{
-	    	//
-	    	//System.out.println("--------------");
-	    	//
-	    	//Node resultatFusion2 = root10.fusion(root1);
-	    	//resultatFusion2.print();
-	    	//}catch(DifferentOrderTrees e){
-	    	//	System.out.println(e.getMessage());
-	    	//}catch(Throwable e){
-	    	//	System.out.println(e.getMessage());
-	    	//}
+	    	
+	    	System.out.println("\nroot1 before : \n");
+	    	root1.print();
+
+	    	System.out.println("\nroot1 after delete(" + valueToDelete + ") : \n");
+
+	    	ArrayList<Node> deletedTree = root1.findValue(valueToDelete).delete();
+	    	for (Node i : deletedTree){
+	    		i.print();
+	    		System.out.println();
+	    	}
 	    }
 
 }
