@@ -22,8 +22,50 @@ public class Bellman {
 	}
 	
 	public void shortestPath() {
-		// completer
-	
+		boolean flag = false;
+		int compteur = 0;
+		
+		//On crée deux nouveaux vecteurs
+		Vector<Double> vectPi = new Vector<Double>();
+		Vector<Integer> vectR = new Vector<Integer>();
+		
+		//On popule les vecteurs avec infini et null
+		for(int i = 0; i < graph.getNodes().size(); i++){
+			vectPi.add(graph.inf);
+			vectR.add(null);
+		}
+		
+		//On ajoute les vecteurs
+		piTable.add(vectPi);
+		rTable.add(vectR);
+		
+		//Si ce n'est pas la première fois qu'on ajoute un vecteur
+		if(piTable.size() != 1){
+			//On évalue combien de valeurs sont égales dans les 2 derniers
+			//vecteurs de piTable
+			for(int i = 0; i < piTable.get(piTable.size()-1).size(); i++){
+				if(piTable.get(piTable.size()-1).get(i) == piTable.get(piTable.size()-2).get(i))
+					compteur++;
+			}
+			
+			//Si on a pas atteint le nombre de nodes ou que les deux dernières lignes de piTable ne sont pas égales
+			if(piTable.size() != graph.getNodes().size() && compteur != piTable.size()){
+				//On vérifie quelles nodes
+				for(int i = 0; i < graph.getNodes().size(); i++){
+					for(int j = 0; j < graph.getInEdges(graph.getNodes().get(i)).size(); j++)
+						if(graph.getOutEdges(graph.getNodes().get(i)).get(j).getSource() == sourceNode){
+							piTable.get(piTable.size()).set(i, graph.getOutEdges(graph.getNodes().get(i)).get(j).getDistance());
+							rTable.get(rTable.size()).set(i, graph.getOutEdges(graph.getNodes().get(i)).get(j).getSource().getId());
+					}
+				}
+			}
+		}
+		else{
+			piTable.get(0).set(0, 0.0);
+		}
+		for(int i = 0; i < rTable.get(rTable.size()).size(); i++)
+			if(rTable.get(rTable.size()).get(i) != null)
+				shortestPath();	
 	}
 	
 	public void  diplayShortestPaths() {
