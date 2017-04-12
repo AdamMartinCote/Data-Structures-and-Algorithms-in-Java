@@ -23,15 +23,21 @@ public class Graph {
 	
 	public List<Edge> getOutEdges(Node source) {
 		List<Edge> outEdges = new LinkedList<Edge>(); 
-		// A completer
+		for(Edge edge: edges){
+			if(edge.getSource() == source)
+				outEdges.add(edge);
+		}
 		
 		return outEdges;	
 	}
 	
 	public List<Edge> getInEdges(Node dest) {
 		List<Edge> inEdges = new LinkedList<Edge>(); 
-		// A completer 
-		
+		for(Edge edge: edges){
+			if(edge.getDestination() == dest)
+				inEdges.add(edge);
+		}
+			
 		return inEdges;		
 	}
 	// Accesseurs 
