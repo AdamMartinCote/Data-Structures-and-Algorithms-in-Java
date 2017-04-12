@@ -13,8 +13,7 @@ public class Graph {
 	private List<Edge> edges; // Les arcs
 	static final double inf = 99999;
 	public Graph() {
-		nodes = new ArrayList<Node>();
-		edges = new ArrayList<Edge>();
+		
 	}
 	
 	
@@ -42,23 +41,16 @@ public class Graph {
 			// the following lines represents the out edges of each Node created
 			// iteration from here = an edge source
 			// values in the line = an edge destination and price
-
-			for (int i = 1; !listOfLines.get(i).equals("") && i < listOfLines.size(); ++i){
+			for (int i = 1; i < listOfLines.size(); ++i){
 				tokens = listOfLines.get(i).split(separtor);
-				
-				
-				for (int j = 0; j < tokens.length; ++j){
-					if (!tokens[j].equals("inf") && !tokens[j].equals("0")){
+				for (int j = 0; i < tokens.length; ++j){
+					if (tokens[j] != "inf" && tokens[j] != "0")
 						edges.add(new Edge(nodes.get(i - 1), nodes.get(j),Double.parseDouble(tokens[j])));
-					}
 				}
 			}
 		}
 		catch(IOException e){
 			System.out.println(e.getMessage());
-		}
-		catch(Throwable e){
-			System.out.println(e.toString());
 		}
 
 	}
