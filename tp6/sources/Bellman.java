@@ -15,6 +15,8 @@ public class Bellman {
 	
 	public Bellman (Graph g) {
 		this.graph = g;
+		piTable = new LinkedList<Vector<Double>>();
+		rTable = new LinkedList<Vector<Integer>>();
 	}
 	
 	public void setSourceNode(Node source) {
@@ -31,7 +33,7 @@ public class Bellman {
 		
 		//On popule les vecteurs avec infini et null
 		for(int i = 0; i < graph.getNodes().size(); i++){
-			vectPi.add(graph.inf);
+			vectPi.add(Graph.inf);
 			vectR.add(null);
 		}
 		
@@ -53,6 +55,7 @@ public class Bellman {
 				//On vérifie quelles nodes
 				for(int i = 0; i < graph.getNodes().size(); i++){
 					for(int j = 0; j < graph.getInEdges(graph.getNodes().get(i)).size(); j++)
+						//Si la node a une edge qui est connecté à sourceNode
 						if(graph.getOutEdges(graph.getNodes().get(i)).get(j).getSource() == sourceNode){
 							piTable.get(piTable.size()).set(i, graph.getOutEdges(graph.getNodes().get(i)).get(j).getDistance());
 							rTable.get(rTable.size()).set(i, graph.getOutEdges(graph.getNodes().get(i)).get(j).getSource().getId());
@@ -63,8 +66,8 @@ public class Bellman {
 		else{
 			piTable.get(0).set(0, 0.0);
 		}
-		for(int i = 0; i < rTable.get(rTable.size()).size(); i++)
-			if(rTable.get(rTable.size()).get(i) != null)
+		for(int i = 0; i < rTable.get(rTable.size() - 1).size(); i++)
+			if(rTable.get(rTable.size() - 1).get(i) != null)
 				shortestPath();	
 	}
 	
@@ -72,10 +75,58 @@ public class Bellman {
 		Stack<Node> path=new Stack<Node>();
 		// A completer	
 		
+		
 	}
 
 	public void displayTables() {
 		// A completer
+		System.out.println("<< PITable >>");
+		System.out.println("k  :  S  B  C  D  E  F");
+		for(int i = 0; i < piTable.size(); i++){
+			System.out.print(i+ "  :  ");
+			for(int j = 0; j < piTable.get(i).size(); j++){
+				System.out.print(piTable.get(i).get(j) + "  ");
+			}
+			System.out.println();
+		}
 		
+		System.out.println("<< RTable >>");
+		System.out.println("k  :  S  B  C  D  E  F");
+		for(int i = 0; i < rTable.size(); i++){
+			System.out.print(i+ "  :  ");
+			for(int j = 0; j < rTable.get(i).size(); j++){
+				if(rTable.get(i).get(j) != null)
+					System.out.print(rTable.get(i).get(j) + "  ");
+				else
+					System.out.print("-  ");
+			}
+			System.out.println();
+		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
