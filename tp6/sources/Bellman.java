@@ -31,7 +31,7 @@ public class Bellman {
 		
 		//On popule les vecteurs avec infini et null
 		for(int i = 0; i < graph.getNodes().size(); i++){
-			vectPi.add(graph.inf);
+			vectPi.add(Graph.inf);
 			vectR.add(null);
 		}
 		
@@ -70,12 +70,30 @@ public class Bellman {
 	
 	public void  diplayShortestPaths() {
 		Stack<Node> path=new Stack<Node>();
-		// A completer	
+		
+		// pour les 6 noeuds
+		
+		int thisId = 0;
+		for (Node n : graph.getNodes()){
+			do{
+				path.add(graph.getNodes().get((rTable.get(rTable.size() - 1)).get(thisId)));	// get the node it "comes from"
+			} while (!path.peek().getName().equals("S"));
+			
+			// pop each node of the stack and print it
+			while(!path.empty()){
+				System.out.print(path.pop().getName() + " -> ");
+			}
+			System.out.println();
+			
+			++thisId;
+		}
+		
 		
 	}
 
 	public void displayTables() {
 		// A completer
+		
 		
 	}
 }
