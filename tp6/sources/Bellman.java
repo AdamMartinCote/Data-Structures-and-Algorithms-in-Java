@@ -24,7 +24,6 @@ public class Bellman {
 	}
 	
 	public void shortestPath() {
-		boolean flag = false;
 		int compteur = 0;
 		
 		//On crée deux nouveaux vecteurs
@@ -74,12 +73,14 @@ public class Bellman {
 	public void  diplayShortestPaths() {
 		Stack<Node> path=new Stack<Node>();
 		
-		// pour les 6 noeuds
-		
+		// pour les n noeuds
 		int thisId = 0;
-		for (Node n : graph.getNodes()){
+		Vector<Integer> lastRowOfRTable = rTable.get(rTable.size() - 1);
+		for (int i = 0; i < lastRowOfRTable.size(); ++i){
 			do{
-				path.add(graph.getNodes().get((rTable.get(rTable.size() - 1)).get(thisId)));	// get the node it "comes from"
+				// get the node it "comes from"
+				path.push(graph.getNodes().get(lastRowOfRTable.get(i)));
+				
 			} while (!path.peek().getName().equals("S"));
 			
 			// pop each node of the stack and print it
