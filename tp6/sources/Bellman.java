@@ -15,106 +15,131 @@ public class Bellman {
 	
 	public Bellman (Graph g) {
 		this.graph = g;
-		piTable = new LinkedList<Vector<Double>>();
-		rTable = new LinkedList<Vector<Integer>>();
 	}
 	
 	public void setSourceNode(Node source) {
 		this.sourceNode = source;
 	}
 	
-	public void shortestPath() {
-		int compteur = 0;
+	public void shortestPath(){
 		
-		//On crée deux nouveaux vecteurs
-		Vector<Double> vectPi = new Vector<Double>();
-		Vector<Integer> vectR = new Vector<Integer>();
+		// init
+		int k = 1;
+		int n = graph.getNodes().size();
+		boolean hasChangedSinceLastIteration = true;
+		Double alternativePathLength;
 		
-		//On popule les vecteurs avec infini et null
-		for(int i = 0; i < graph.getNodes().size(); i++){
-			vectPi.add(Graph.inf);
-			vectR.add(null);
+		piTable = new LinkedList<Vector<Double>>();
+		rTable = new LinkedList<Vector<Integer>>();
+
+		// set first line of both tables
+		piTable.add(new Vector<Double>(n));
+		rTable.add(new Vector<Integer>(n));
+		for (int i = 0; i < n; ++i){
+			piTable.get(0).add(Graph.inf);
+			rTable.get(0).add((int)Graph.inf);
 		}
+		piTable.get(0).set(0, 0.0); // set S
 		
-		//On ajoute les vecteurs
-		piTable.add(vectPi);
-		rTable.add(vectR);
 		
-		piTable.get(0).set(0, 0.0);
-		
-		//Si on a pas atteint le nombre de nodes ou que les deux dernières lignes de piTable ne sont pas égales
-		while(piTable.size() != graph.getNodes().size() && compteur != piTable.size()){
-			//Boucle qui parcoure tous les nodes
-			for(int i = 0; i < graph.getNodes().size() - 1; i++){
-				//Boucle qui parcoure tous les nodes destination de la node courante
-				for(int j = 0; j < graph.getInEdges(graph.getNodes().get(i)).size() - 1; j++)
-					//Si la node a une edge qui est connecté à sourceNode
-					if(graph.getInEdges(graph.getNodes().get(i)).get(j).getSource() == graph.getOutEdges(graph.getNodes().get(j))){
-						piTable.get(piTable.size()-1).set(i, graph.getOutEdges(graph.getNodes().get(i)).get(j).getDistance());
-						rTable.get(rTable.size()-1).set(i, graph.getOutEdges(graph.getNodes().get(i)).get(j).getSource().getId());
+		while(k <= n && hasChangedSinceLastIteration){
+			hasChangedSinceLastIteration = false;
+			
+			piTable.add(new Vector<Double>(n));
+			rTable.add(new Vector<Integer>(n));
+			for (int i = 0; i < n; ++i){
+				piTable.get(k).add(piTable.get(k - 1).get(i));
+				rTable.get(k).add(rTable.get(k - 1).get(i));
+			}
+			
+			// iterate over this row of piTable
+			for(int nodeIndex = 0; nodeIndex < n; ++nodeIndex){
+				
+				// iterate over each alternative source for that node
+				// pi^k(x):= min{ pi^k-1(x), min {pi^k(y) + dxy }};
+				for (Edge edge : graph.getInEdges(graph.getNodes().get(nodeIndex))){
+					alternativePathLength = (edge.getDistance() + piTable.get(k - 1).get(edge.getSource().getId()));
+					if (alternativePathLength < piTable.get(k - 1).get(nodeIndex)){
+						piTable.get(k).set(nodeIndex, alternativePathLength);
+						rTable.get(k).set(nodeIndex, edge.getSource().getId());
+						hasChangedSinceLastIteration = true;
+					}
 				}
 			}
 			
-			//On évalue combien de valeurs sont égales dans les 2 derniers
-			//vecteurs de piTable
-			for(int i = 0; i < piTable.get(piTable.size()-1).size() && piTable.size() > 1; i++){
-				if(piTable.get(piTable.size()-1).get(i) == piTable.get(piTable.size()-2).get(i))
-					compteur++;
-			}
-			piTable.add(piTable.get(piTable.size()-1));
-			rTable.add(rTable.get(rTable.size()-1));
+			++k;
 		}
-		/*for(int i = 0; i < rTable.get(rTable.size() - 1).size(); i++)
-			if(rTable.get(rTable.size() - 1).get(i) != null)
-				shortestPath();	
-		*/
 	}
-	
+		
 	public void  diplayShortestPaths() {
 		Stack<Node> path=new Stack<Node>();
+		boolean circuitNeg = false;
+		Integer sourceId = 0;
 		
 		// pour les n noeuds
-		int thisId = 0;
 		Vector<Integer> lastRowOfRTable = rTable.get(rTable.size() - 1);
-		for (int i = 0; i < lastRowOfRTable.size(); ++i){
-			do{
-				// get the node it "comes from"
-				path.push(graph.getNodes().get(lastRowOfRTable.get(i)));
+		
+		System.out.println("\n=> Les chemins sont : \n");
+		for (Node node : graph.getNodes()){
+			if (node.getId() != 0){
 				
-			} while (!path.peek().getName().equals("S"));
-			
-			// pop each node of the stack and print it
-			while(!path.empty()){
-				System.out.print(path.pop().getName() + " -> ");
+				// build stack
+				sourceId = node.getId();
+				do{
+					path.push(graph.getNodes().get(sourceId));
+					sourceId = lastRowOfRTable.get(sourceId);
+					for (Node n : path){
+						if ( n.getId() == sourceId){
+							circuitNeg = true;
+						}
+					}
+				}while (sourceId != 0 && !circuitNeg);
+				
+				if(!circuitNeg){
+					System.out.print("[S - " + node.getName() + "] ");
+					System.out.print(piTable.get(piTable.size() - 1).get(node.getId()));
+					System.out.print(" : S ");
+					while(!path.isEmpty())
+						System.out.print("-> " + path.pop().getName());
+					System.out.println();
+				}
+				else
+					break;
 			}
-			System.out.println();
-			
-			++thisId;
 		}
-		
-		
-		
+		if(circuitNeg){
+			System.out.println("==> le graphe contient un circuit négatif :");
+			
+			System.out.print("[" + graph.getNodes().get(sourceId).getName() + " - " 
+					+ graph.getNodes().get(sourceId).getName() + "] : " 
+					+ graph.getNodes().get(sourceId).getName());
+			while(!path.isEmpty())
+				System.out.print(" -> " + path.pop().getName());
+		}
 	}
 
 	public void displayTables() {
-		// A completer
-		System.out.println("<< PITable >>");
+		System.out.println("<< PITable >>:");
 		System.out.println("k\t:\tS\tB\tC\tD\tE\tF");
 		for(int i = 0; i < piTable.size(); i++){
-			System.out.print(i+ "  :  ");
+			System.out.print(i+ "\t:\t");
 			for(int j = 0; j < piTable.get(i).size(); j++){
-				System.out.print(piTable.get(i).get(j) + "  ");
+				if(piTable.get(i).get(j) < 1000)
+					System.out.print(piTable.get(i).get(j) + "\t");
+				else System.out.print("inf\t");
 			}
 			System.out.println();
 		}
 		
-		System.out.println("<< RTable >>");
-		System.out.println("k\t\t:\t\tS\t\tB\t\tC\t\tD\t\tE\t\tF");
+		System.out.println("<< RTable >>:");
+		System.out.println("k\t:\tS\tB\tC\tD\tE\tF");
 		for(int i = 0; i < rTable.size(); i++){
-			System.out.print(i+ "  :  ");
+			System.out.print(i+ "\t:\t");
 			for(int j = 0; j < rTable.get(i).size(); j++){
 				if(rTable.get(i).get(j) != null)
-					System.out.print(rTable.get(i).get(j) + "  ");
+					if(rTable.get(i).get(j) < graph.getNodes().size())
+						System.out.print(graph.getNodes().get(rTable.get(i).get(j)).getName() + "\t");
+					else System.out.print("-\t");
 				else
 					System.out.print("-  ");
 			}
